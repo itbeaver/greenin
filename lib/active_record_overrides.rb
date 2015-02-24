@@ -34,7 +34,7 @@ module ActiveRecord
       rescue NameError
         entity = nil
       end
-      entity
+      entity.new(self) if entity
     end
 
     define_method(Greenin.entity_method_name) do
