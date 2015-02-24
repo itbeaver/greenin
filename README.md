@@ -1,4 +1,5 @@
 # Greenin
+[![Code Climate](https://codeclimate.com/github/itbeaver/greenin/badges/gpa.svg)](https://codeclimate.com/github/itbeaver/greenin)
 
 Describe your Grape Entities in Rails Active Record models
 
