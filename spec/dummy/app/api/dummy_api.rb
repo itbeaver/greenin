@@ -1,0 +1,2 @@
+class DummyApi < BaseApi
+end
