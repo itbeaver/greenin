@@ -63,6 +63,9 @@ end
 
 So, now you can call entity like that:
 ```ruby
+Post.all.entity(root: 'myposts').to_json == Post::Entity.represent(Post.all, root: 'myposts').to_json
+# => true
+
 Post::Entity
 # => Post::Entity
 
@@ -70,12 +73,21 @@ Post.entity
 # => Post::Entity
 
 Post.all.entity
-# => #<Post::Entity:0x007fb4610d8a00
-#    @object=#<ActiveRecord::Relation [...]>, @options={}>
+# => {"posts"=>[#<Post::Entity:0x007ff0880d7d18
+#                @object=#<Post id: 1, title: "Some title", created_at: "2015-02-27 17:48:07",
+#                         updated_at: "2015-02-27 17:48:07">, @options={:collection=>true}>, ...]}
 
-Post.first.entity
-# => #<Post::Entity:0x007fb462263090 @object=
-#    #<Post id: nil, ..., created_at: nil, updated_at: nil>, @options={}>
+Post.all.entity.to_json
+# => {"posts":[{"title":"Some title"},{"title":"Some title"},{"title":"Some title"}]}
+
+Post.all.entity(root: 'myposts').to_json
+# => {"myposts":[{"title":"Some title"},{"title":"Some title"},{"title":"Some title"}]}
+
+Post.first.entity.to_json
+# => {"post":[{"title":"Some title"}]}
+
+Post.first.entity(root: false).to_json
+# => {"title":"Some title"}
 ```
 
 ## Contributing
