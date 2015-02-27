@@ -2,14 +2,18 @@ describe 'API Spec' do
   subject do
     Class.new(Grape::API) do
       params do
-        optional :limit, default: 1
-        optional :root, default: 'postes'
+        optional :root, default: ''
       end
       get '/posts' do
         status 200
         root = params[:root]
         root = false if params[:root] == 'false'
-        present Post.all.limit(params[:limit]).entity(root: root).to_json
+        root = nil if params[:root] == ''
+        if root.nil?
+          present Post.all.entity.to_json
+        else
+          present Post.all.entity(root: root).to_json
+        end
       end
     end
   end
@@ -18,17 +22,29 @@ describe 'API Spec' do
     subject
   end
 
-  it 'get posts' do
-    3.times { create(:post) }
-    get '/posts', limit: 3
-    expect(last_response.status).to eq(200)
-    expect(JSON.parse(last_response.body)).to eq({"postes"=>[{"title"=>"Some title"}, {"title"=>"Some title"}, {"title"=>"Some title"}]})
-    get '/posts', limit: 1
-    expect(last_response.status).to eq(200)
-    expect(JSON.parse(last_response.body)).to eq({"postes"=>[{"title"=>"Some title"}]})
-    get '/posts', limit: 1, root: 'false'
+  it 'check getting one object entity without root' do
+    create(:post)
+    get '/posts', root: 'false'
     expect(last_response.status).to eq(200)
     expect(JSON.parse(last_response.body)).to eq([{"title"=>"Some title"}])
+  end
+  it 'check getting one object entity with changed root' do
+    create(:post)
+    get '/posts', root: 'postik'
+    expect(last_response.status).to eq(200)
+    expect(JSON.parse(last_response.body)).to eq({"postik"=>[{"title"=>"Some title"}]})
+  end
+  it 'check getting one object entity' do
+    create(:post)
+    get '/posts'
+    expect(last_response.status).to eq(200)
+    expect(JSON.parse(last_response.body)).to eq({"posts"=>[{"title"=>"Some title"}]})
+  end
+  it 'check getting relation entity with changed root' do
+    3.times { create(:post) }
+    get '/posts', root: 'postes'
+    expect(last_response.status).to eq(200)
+    expect(JSON.parse(last_response.body)).to eq({"postes"=>[{"title"=>"Some title"}, {"title"=>"Some title"}, {"title"=>"Some title"}]})
   end
 
 end

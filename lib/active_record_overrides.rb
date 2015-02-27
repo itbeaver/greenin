@@ -3,9 +3,19 @@ module ActiveRecord
   #
   # Examples
   #
-  #   User.all.entity
-  #   # => #<User::Entity:0x007fb4610d8a00
-  #        @object=#<ActiveRecord::Relation [...]>, @options={}>
+  #   User.all.entity(root: 'users').to_json
+  #   # => { "users":
+  #           [{
+  #               "title": "Some title"
+  #             },
+  #             {
+  #              "title": "Some title"
+  #             },
+  #             {
+  #              "title": "Some title"
+  #             }]
+  #         }
+
   class Relation
     define_method(Greenin.entity_method_name) do |args={}|
       begin
@@ -24,9 +34,8 @@ module ActiveRecord
   #   User.entity
   #   # => User::Entity
   #
-  #   User.new.entity
-  #   # => #<User::Entity:0x007fb462263090 @object=
-  #        #<User id: nil, ..., created_at: nil, updated_at: nil>, @options={}>
+  #   User.first.entity(root: false).to_json
+  #   # => {"title":"Some title"}
   class Base
     define_singleton_method Greenin.entity_method_name do
       begin
