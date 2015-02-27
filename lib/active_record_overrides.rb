@@ -7,13 +7,13 @@ module ActiveRecord
   #   # => #<User::Entity:0x007fb4610d8a00
   #        @object=#<ActiveRecord::Relation [...]>, @options={}>
   class Relation
-    define_method(Greenin.entity_method_name) do
+    define_method(Greenin.entity_method_name) do |args={}|
       begin
         entity = %(#{model}::#{Greenin.entity_class_name}).constantize
       rescue NameError
         entity = nil
       end
-      entity.new(self) if entity
+      entity.represent(self, args) if entity
     end
   end
 
@@ -37,14 +37,14 @@ module ActiveRecord
       entity
     end
 
-    define_method(Greenin.entity_method_name) do
+    define_method(Greenin.entity_method_name) do |args={}|
       begin
         entity = %(#{self.class}::#{Greenin.entity_class_name})
                  .constantize
       rescue NameError
         entity = nil
       end
-      entity.new(self) if entity
+      entity.represent(self, args) if entity
     end
   end
 end
