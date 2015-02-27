@@ -1,0 +1,11 @@
+language: ruby
+rvm:
+  - 2.0
+  - 2.1
+  - 2.2
+  - ruby-head
+bundler_args: --without production
+addons:
+  code_climate:
+    repo_token: 6a19929ed0a99137c10684ba06ca240aa176173a4ff878248db3ec5f7aecf726
+script: bundle exec rspec spec
