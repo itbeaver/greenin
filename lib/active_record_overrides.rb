@@ -3,17 +3,27 @@ module ActiveRecord
   #
   # Examples
   #
-  #   User.all.entity
-  #   # => #<User::Entity:0x007fb4610d8a00
-  #        @object=#<ActiveRecord::Relation [...]>, @options={}>
+  #   User.all.entity(root: 'users').to_json
+  #   # => { "users":
+  #           [{
+  #               "title": "Some title"
+  #             },
+  #             {
+  #              "title": "Some title"
+  #             },
+  #             {
+  #              "title": "Some title"
+  #             }]
+  #         }
+
   class Relation
-    define_method(Greenin.entity_method_name) do
+    define_method(Greenin.entity_method_name) do |args={}|
       begin
         entity = %(#{model}::#{Greenin.entity_class_name}).constantize
       rescue NameError
         entity = nil
       end
-      entity.new(self) if entity
+      entity.represent(self, args) if entity
     end
   end
 
@@ -24,9 +34,8 @@ module ActiveRecord
   #   User.entity
   #   # => User::Entity
   #
-  #   User.new.entity
-  #   # => #<User::Entity:0x007fb462263090 @object=
-  #        #<User id: nil, ..., created_at: nil, updated_at: nil>, @options={}>
+  #   User.first.entity(root: false).to_json
+  #   # => {"title":"Some title"}
   class Base
     define_singleton_method Greenin.entity_method_name do
       begin
@@ -37,14 +46,14 @@ module ActiveRecord
       entity
     end
 
-    define_method(Greenin.entity_method_name) do
+    define_method(Greenin.entity_method_name) do |args={}|
       begin
         entity = %(#{self.class}::#{Greenin.entity_class_name})
                  .constantize
       rescue NameError
         entity = nil
       end
-      entity.new(self) if entity
+      entity.represent(self, args) if entity
     end
   end
 end
