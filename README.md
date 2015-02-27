@@ -1,5 +1,9 @@
 # Greenin
+[![Gem Version](https://badge.fury.io/rb/greenin.svg)](http://badge.fury.io/rb/greenin)
+[![Build Status](https://travis-ci.org/itbeaver/greenin.svg?branch=develop)](https://travis-ci.org/itbeaver/greenin)
 [![Code Climate](https://codeclimate.com/github/itbeaver/greenin/badges/gpa.svg)](https://codeclimate.com/github/itbeaver/greenin)
+[![Test Coverage](https://codeclimate.com/github/itbeaver/greenin/badges/coverage.svg)](https://codeclimate.com/github/itbeaver/greenin)
+[![Dependency Status](https://gemnasium.com/itbeaver/greenin.svg)](https://gemnasium.com/itbeaver/greenin)
 
 Describe your Grape Entities in Rails Active Record models
 
