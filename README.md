@@ -15,6 +15,12 @@ Add this line to your application's Gemfile:
 gem 'greenin'
 ```
 
+or
+
+```ruby
+gem 'greenin', github: 'itbeaver/greenin'
+```
+
 And then execute:
 
     $ bundle
